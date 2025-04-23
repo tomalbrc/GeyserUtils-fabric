@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "geyserutils",
+  "version": "${version}",
+  "name": "GeyserUtils",
+  "description": "",
+  "authors": ["zimzaza4", "willem.dev", "tomalbrc"],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/geyserutils/icon.png",
+  "environment": "server",
+  "entrypoints": {
+    "main": [
+      "me.zimzaza4.geyserutils.fabric.GeyserUtils"
+    ]
+  },
+  "mixins": [
+    "geyserutils.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
