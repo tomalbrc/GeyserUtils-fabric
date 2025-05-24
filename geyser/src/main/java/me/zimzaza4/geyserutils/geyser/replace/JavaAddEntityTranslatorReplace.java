@@ -129,7 +129,7 @@ public class JavaAddEntityTranslatorReplace extends PacketTranslator<Clientbound
         }
         String def = CUSTOM_ENTITIES.get(session).getIfPresent(entity.getEntityId());
         if (def != null) {
-            EntityDefinition newDef = LOADED_ENTITY_DEFINITIONS.getOrDefault(def, entity.getDefinition());
+            EntityDefinition<?> newDef = LOADED_ENTITY_DEFINITIONS.getOrDefault(def, entity.getDefinition());
             entity.setDefinition(newDef);
 
             // reinstantiate the entity object to create the propertymanager.

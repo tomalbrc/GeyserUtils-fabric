@@ -51,6 +51,7 @@ import org.geysermc.mcprotocollib.network.Session;
 import org.geysermc.mcprotocollib.network.event.session.PacketSendingEvent;
 import org.geysermc.mcprotocollib.network.event.session.SessionAdapter;
 import org.geysermc.mcprotocollib.network.packet.Packet;
+import org.geysermc.mcprotocollib.protocol.data.game.entity.type.EntityType;
 import org.geysermc.mcprotocollib.protocol.packet.common.clientbound.ClientboundCustomPayloadPacket;
 import org.geysermc.mcprotocollib.protocol.packet.common.serverbound.ServerboundCustomPayloadPacket;
 import org.geysermc.mcprotocollib.protocol.packet.ingame.clientbound.entity.ClientboundAddEntityPacket;
@@ -70,8 +71,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class GeyserUtils implements Extension {
-
-
     public static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
     private static final Map<String, List<Map.Entry<String, Class<?>>>> properties = new HashMap<>();
     @Getter
@@ -81,7 +80,7 @@ public class GeyserUtils implements Extension {
     @Getter
     public static Map<String, SkinData> LOADED_SKIN_DATA = new HashMap<>();
     @Getter
-    public static Map<String, EntityDefinition> LOADED_ENTITY_DEFINITIONS = new HashMap<>();
+    public static Map<String, EntityDefinition<?>> LOADED_ENTITY_DEFINITIONS = new HashMap<>();
     @Getter
     public static Map<GeyserConnection, Cache<Integer, String>> CUSTOM_ENTITIES = new ConcurrentHashMap<>();
     static Cape EMPTY_CAPE = new Cape("", "no-cape", new byte[0], true);
@@ -147,7 +146,7 @@ public class GeyserUtils implements Extension {
 
         Registries.BEDROCK_ENTITY_PROPERTIES.get().add(entityProperties.toNbtMap(entityId));
 
-        EntityDefinition old = LOADED_ENTITY_DEFINITIONS.get(entityId);
+        EntityDefinition<?> old = LOADED_ENTITY_DEFINITIONS.get(entityId);
         LOADED_ENTITY_DEFINITIONS.replace(entityId, new EntityDefinition(old.factory(), old.entityType(), old.identifier(),
                 old.width(), old.height(), old.offset(), entityProperties, old.translators()));
 
@@ -187,8 +186,7 @@ public class GeyserUtils implements Extension {
                 .putList("idlist", NbtType.COMPOUND, idList).build()
         );
 
-        EntityDefinition<Entity> def = EntityDefinition.builder(null)
-                .height(0.1f).width(0.1f).identifier(id).registeredProperties(getProperties(id)).build();
+        EntityDefinition<Entity> def = EntityDefinition.builder(null).height(0.1f).width(0.1f).type(EntityType.TEXT_DISPLAY).identifier(id).registeredProperties(getProperties(id)).build();
 
         LOADED_ENTITY_DEFINITIONS.put(id, def);
     }
@@ -594,8 +592,6 @@ public class GeyserUtils implements Extension {
                     logger().info("DEF PROPERTIES: " + entityPropertyRegisterPacket.getIdentifier());
                 }
             }
-
-
         }
     }
 

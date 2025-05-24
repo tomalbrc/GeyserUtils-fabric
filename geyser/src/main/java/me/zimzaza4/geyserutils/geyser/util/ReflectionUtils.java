@@ -31,6 +31,7 @@ public class ReflectionUtils {
     public static void init() {
         PlatformType type = GeyserImpl.getInstance().platformType();
         prefix = type == PlatformType.STANDALONE || type == PlatformType.VELOCITY ? "" : "org.geysermc.geyser.platform." + type.platformName().toLowerCase() + ".shaded.";
+        if (type == PlatformType.FABRIC) prefix = "";
         CLIENTBOUND_PAYLOAD_PACKET_CLASS = ClientboundCustomPayloadPacket.class;
         SERVERBOUND_PAYLOAD_PACKET_CLASS = ServerboundCustomPayloadPacket.class;
         KEY_CLASS = Class.forName(prefix + "net.kyori.adventure.key.Key");
