@@ -73,6 +73,10 @@ public class PlayerUtils {
         EntityUtils.sendCustomColor(player, entity.getId(), color);
     }
 
+    public static void setCustomVariant(ServerPlayer player, int id, int variant) {
+        EntityUtils.sendVariant(player, id, variant);
+    }
+
     public static void setCustomEntity(ServerPlayer player, int id, String def) {
         EntityUtils.setCustomEntity(player, id, def);
     }

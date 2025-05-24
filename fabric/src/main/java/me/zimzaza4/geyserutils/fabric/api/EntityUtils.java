@@ -1,12 +1,17 @@
 package me.zimzaza4.geyserutils.fabric.api;
 
+import com.google.common.cache.Cache;
 import me.zimzaza4.geyserutils.common.channel.GeyserUtilsChannels;
 import me.zimzaza4.geyserutils.common.packet.*;
 import me.zimzaza4.geyserutils.fabric.GeyserUtils;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.level.ServerPlayer;
+import org.geysermc.geyser.api.GeyserApi;
 
 import java.awt.*;
 import java.util.Map;
+
+import static me.zimzaza4.geyserutils.geyser.GeyserUtils.CUSTOM_ENTITIES;
 
 public class EntityUtils {
 
@@ -40,14 +45,17 @@ public class EntityUtils {
         packet.setEntityId(id);
         packet.setVariant(variant);
         GeyserUtils.send(player, GeyserUtilsChannels.MAIN, GeyserUtils.getPacketManager().encodePacket(packet));
-
     }
 
-
     public static void setCustomEntity(ServerPlayer player, int entityId, String def) {
-        CustomEntityPacket packet = new CustomEntityPacket(entityId, def);
-        GeyserUtils.send(player, GeyserUtilsChannels.MAIN, GeyserUtils.getPacketManager().encodePacket(packet));
-
+        if (!FabricLoader.getInstance().isModLoaded("geyser-fabric")) {
+            CustomEntityPacket packet = new CustomEntityPacket(entityId, def);
+            GeyserUtils.send(player, GeyserUtilsChannels.MAIN, GeyserUtils.getPacketManager().encodePacket(packet));
+        }
+        else {
+            Cache<Integer, String> cache = CUSTOM_ENTITIES.get(GeyserApi.api().connectionByUuid(player.getUUID()));
+            cache.put(entityId, def);
+        }
     }
 
     // (yes I'm aware it's "horrible" code), also this aint player packets at all lmao

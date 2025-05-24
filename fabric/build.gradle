@@ -17,6 +17,7 @@ repositories {
     maven {
         url = uri("https://repo.opencollab.dev/main/")
     }
+    mavenLocal()
 }
 
 dependencies {
@@ -30,7 +31,10 @@ dependencies {
     modImplementation(include("com.pokeskies:FabricPluginMessaging:1.0.0"))
 
     compileOnly('org.geysermc.floodgate:api:2.2.4-SNAPSHOT')
-
+    compileOnly('me.zimzaza4:geyserutils-geyser:1.0-SNAPSHOT')
+    compileOnly( 'org.cloudburstmc.protocol:common:3.0.0.Beta6-SNAPSHOT')
+    compileOnly( 'org.cloudburstmc.protocol:bedrock-connection:3.0.0.Beta6-SNAPSHOT')
+    compileOnly('org.geysermc.geyser:api:2.7.1-SNAPSHOT')
 }
 
 processResources {
